@@ -2,6 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine #creates our database engine
 from dotenv import load_dotenv #lets us read from our .env file
 import os 
+import json 
 
 # Step 1: Load our environment variable(s) from our .env file
 load_dotenv() #lowecase L 
@@ -13,16 +14,27 @@ database_url = os.getenv('DATABASE_URL')
 # Step 2: Create our database connection
 engine = create_engine(database_url)
 
-# Step 3: Read from a table (that already exists)
+# Load CSV
+csv_path = "Data/Current_Employee_Names__Salaries__and_Position_Titles.csv"
+df = pd.read_csv(csv_path)
 
-# An example of a simple query
-df = pd.read_sql("SELECT * FROM stg_employee_comp LIMIT 5", engine)
-print(df)
+# --- Rename columns to match table ---
+df = df.rename(columns={
+    "Name": "full_name",
+    "Department": "department",
+    "Job Titles": "job_title",
+    "Full or Part-Time": "full_or_part",
+    "Typical Hours": "frequency",
+    "Annual Salary": "salary",
+    "Hourly Rate": "hourly_rate",
+    "Salary or Hourly": "salary_or_hourly"
+})
 
-# If we just want everything in a table, we can just use pandas
-# to ask for the table
-genre_df = pd.read_sql_table('stg_employee_comp', engine)
+# Basic validation
+valid_rows = []
+reject_rows = []
 
-print(genre_df)
+# Write to db
+df.to_sql("stg_employee_comp", engine, if_exists="append", index=False)
 
-print("DB URL:", database_url)
+print("Inserted rows:", len(df))
