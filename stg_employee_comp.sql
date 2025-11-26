@@ -1,4 +1,4 @@
-CREATE DATABASE chicago_employees
+CREATE DATABASE chicago_employee
     
 CREATE TABLE stg_employee_comp (
     emp_id           SERIAL PRIMARY KEY,
@@ -7,10 +7,10 @@ CREATE TABLE stg_employee_comp (
     job_title        VARCHAR(100),
     full_or_part     VARCHAR(50),       -- 'F'/'P' or 'FULL TIME'/'PART TIME'
     salary_or_hourly CHAR(6),
-    salary           NUMERIC(12,2) DEFAULT 0, -- annual salary (nullable)
-    hourly_rate      NUMERIC(10,2) DEFAULT 0, -- hourly rate (nullable)
+    salary           NUMERIC(12,2) DEFAULT 0, -- annual salary
+    hourly_rate      NUMERIC(10,2) DEFAULT 0, -- hourly rate 
     --generated columns cannot be written to directly. it 
-    weekly_hours     INTEGER DEFAULT 40,       -- 10, 20, 35, 40 (nullable)
+    weekly_hours     INTEGER DEFAULT 40,       -- 10, 20, 35, 40
     est_annual_pay   NUMERIC(12,2), -- feature-engineered (optional)
     load_ts          TIMESTAMPTZ DEFAULT NOW(),
     department_avg   NUMERIC(12,2)  -- feature-engineered (optional)
