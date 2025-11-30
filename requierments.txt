@@ -2,4 +2,6 @@ pandas
 sqlalchemy
 dotenv 
 os
+json
+seaborn
 psycopg2-binary
