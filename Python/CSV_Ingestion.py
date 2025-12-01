@@ -27,7 +27,6 @@ df = df.rename(columns={
 })
 
 # Add required NULL columns 
-df["est_annual_pay"] = None 
 df["department_avg"] = None 
 
 # Avoid NaN numeric issues
@@ -70,7 +69,6 @@ valid_df = valid_df[[
     "salary",
     "hourly_rate",
     "weekly_hours",
-    "est_annual_pay",
     "department_avg"
 ]]
 
