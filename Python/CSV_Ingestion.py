@@ -3,7 +3,7 @@ from sqlalchemy import create_engine #creates our database engine
 from dotenv import load_dotenv #lets us read from our .env file
 import os
 import json
-
+import zachCapstone as zach
 
 #Step 1: Load our environment variable(s) from our .env file
 load_dotenv()
@@ -13,6 +13,9 @@ engine = create_engine(os.getenv('DATABASE_URL'))
 
 #Load CSV
 df = pd.read_csv("Data/Current_Employee_Names__Salaries__and_Position_Titles.csv")
+
+#Load JSON
+#jsondf = pd.read_json("Data/CapstoneJsonFile.json")
 
 # Rename CSV -> DB columns
 df = df.rename(columns={
@@ -25,18 +28,33 @@ df = df.rename(columns={
     "Annual Salary": "salary",
     "Hourly Rate": "hourly_rate"
 })
+labels=list(df.columns)
 
 # Add required NULL columns 
 df["est_annual_pay"] = None 
 df["department_avg"] = None 
 
-#Creating functions to fill the df with actual numbers instead of 0
 
 # Avoid NaN numeric issues
-df["salary"] = df["salary"].fillna(0)
-df["hourly_rate"] = df["hourly_rate"].fillna(0)
-df["weekly_hours"] = df["weekly_hours"].fillna(40)
+# df["salary"] = df["salary"].fillna(0)
+# df["hourly_rate"] = df["hourly_rate"].fillna(0)
+# df["weekly_hours"] = df["weekly_hours"].fillna(40)
 
+#Creating functions to fill the df with actual numbers instead of 0
+
+for idx, row in df.iterrows():
+    salary = row["salary"]
+    hourly_rate = row["hourly_rate"]
+    weekly_hours = row["weekly_hours"]
+
+    if pd.isna(salary) and not pd.isna(hourly_rate) and not pd.isna(weekly_hours):
+        df.at[idx, "salary"] = zach.calculate_salary(hourly_rate, weekly_hours)
+
+    if pd.isna(hourly_rate) and not pd.isna(salary):
+        df.at[idx, "hourly_rate"] = zach.calculate_hourly(salary)
+
+    if pd.isna(weekly_hours):
+        df.at[idx, "weekly_hours"] = 40
 
 # Required fields for ingestion
 required_cols = ["full_name", "department", "job_title"]

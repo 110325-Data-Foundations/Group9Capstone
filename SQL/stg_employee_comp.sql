@@ -9,7 +9,6 @@ CREATE TABLE stg_employee_comp (
     salary           NUMERIC(12,2) DEFAULT 0, -- annual salary
     hourly_rate      NUMERIC(10,2) DEFAULT 0, -- hourly rate 
     weekly_hours     INTEGER DEFAULT 40,       -- 10, 20, 35, 40
-    est_annual_pay   NUMERIC(12,2), -- feature-engineered (optional)
     load_ts          TIMESTAMPTZ DEFAULT NOW(),
     department_avg   NUMERIC(12,2)  -- feature-engineered (optional)
 );
@@ -22,7 +21,7 @@ CREATE TABLE rejects (
     source_file TEXT
 );
 
-
+TRUNCATE TABLE stg_employee_comp, rejects;
 SELECT COUNT(*) FROM stg_employee_comp;
 SELECT COUNT(*) FROM rejects;
 
@@ -30,5 +29,3 @@ SELECT * FROM stg_employee_comp LIMIT 10;
 
 SELECT * FROM rejects;
 SELECT raw_record from rejects;
-
-rodriguez, jose j
