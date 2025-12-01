@@ -1,6 +1,6 @@
 CREATE DATABASE chicago_employee
     
-CREATE TABLE stg_employee_comp (
+CREATE TABLE chicago_employee (
     emp_id           SERIAL PRIMARY KEY,
     full_name        VARCHAR(100),
     department       VARCHAR(100),
@@ -9,14 +9,13 @@ CREATE TABLE stg_employee_comp (
     salary_or_hourly CHAR(6),
     salary           NUMERIC(12,2) DEFAULT 0, -- annual salary
     hourly_rate      NUMERIC(10,2) DEFAULT 0, -- hourly rate 
-    --generated columns cannot be written to directly. it 
     weekly_hours     INTEGER DEFAULT 40,       -- 10, 20, 35, 40
     est_annual_pay   NUMERIC(12,2), -- feature-engineered (optional)
     load_ts          TIMESTAMPTZ DEFAULT NOW(),
     department_avg   NUMERIC(12,2)  -- feature-engineered (optional)
 );
 
-CREATE TABLE stg_rejects (
+CREATE TABLE rejects (
     rejected_id SERIAL PRIMARY KEY,
     raw_record JSON,
     error_reason TEXT,
