@@ -5,3 +5,6 @@ os
 json
 seaborn
 psycopg2-binary
+numpy
+adjustText
+mplcursors
