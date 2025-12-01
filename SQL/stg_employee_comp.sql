@@ -22,7 +22,13 @@ CREATE TABLE rejects (
     source_file TEXT
 );
 
+
 SELECT COUNT(*) FROM stg_employee_comp;
 SELECT COUNT(*) FROM rejects;
 
-SELECT * FROM stg_employee_comp LIMIT 1000;
+SELECT * FROM stg_employee_comp LIMIT 10;
+
+SELECT * FROM rejects;
+SELECT raw_record from rejects;
+
+rodriguez, jose j

@@ -1,36 +1,28 @@
 import pandas as pd
-from sqlalchemy import create_engine #creates our database engine
-from dotenv import load_dotenv #lets us read from our .env file
 import os
 
+#Creating functions to fill the df with actual numbers instead of 0
 
-#Step 1: Load our environment variable(s) from our .env file
-load_dotenv()
+# Avoid NaN numeric issues
+df["salary"] = df["salary"].fillna(0)
+df["hourly_rate"] = df["hourly_rate"].fillna(0)
+df["weekly_hours"] = df["weekly_hours"].fillna(40)
 
-database_url = os.getenv('DATABASE_URL')
-complete_df = pd.read_csv("Data/Current_Employee_Names__Salaries__and_Position_Titles.csv")
-
-#print(database_url)
-
-# Step 2: Create our database connection
-engine = create_engine(database_url)
-
-complete_df.to_sql(
-        name='chicago_employee',  # The name of the table to create/write to
-        con=engine,             # Your database connection engine
-        if_exists='replace',    # Options: 'fail', 'replace', 'append'
-        index=False             # Set to False to avoid writing the DataFrame index as a column
-)
-
-# Step 3: Read from a table (that already exists)
-
-
-# An example of a simple query
-df = pd.read_sql("SELECT * FROM chicago_employee LIMIT 1000", engine)
-print(df)
-
-# If we just want everything in a table, we can just use pandas
-# to ask for the table
-# genre_df = pd.read_sql_table('genre', engine)
-
-# print(genre_df)
+#Calculates salary if there is none
+def calculate_salary(hourly_rate,weekly_hours):
+    if hourly_rate is not None and weekly_hours is not None:
+        return round(float(hourly_rate*weekly_hours),2)
+    
+#Calculates hourly if there is none
+def calculate_hours(salary):
+    if salary is not None:
+        return round(float(salary/40),2)
+    
+#Calculates department average - should be used in a spot where it matches with a department name
+def calculate_department_avg(salary):
+    totalSalary=0
+    salaryList=[]
+    for y in salary:
+        totalSalary+=y
+        salaryList.append()
+    return totalSalary
