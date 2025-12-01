@@ -1,6 +1,5 @@
-CREATE DATABASE chicago_employee
-    
-CREATE TABLE chicago_employee (
+
+CREATE TABLE stg_employee_comp (
     emp_id           SERIAL PRIMARY KEY,
     full_name        VARCHAR(100),
     department       VARCHAR(100),
@@ -22,3 +21,8 @@ CREATE TABLE rejects (
     load_ts TIMESTAMPTZ DEFAULT NOW(),
     source_file TEXT
 );
+
+SELECT COUNT(*) FROM stg_employee_comp;
+SELECT COUNT(*) FROM rejects;
+
+SELECT * FROM stg_employee_comp LIMIT 1000;
