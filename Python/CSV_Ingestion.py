@@ -3,7 +3,7 @@ from sqlalchemy import create_engine #creates our database engine
 from dotenv import load_dotenv #lets us read from our .env file
 import os
 import json
-import zachCapstone as zach
+import Python.zachCalculations as zach
 
 #Step 1: Load our environment variable(s) from our .env file
 load_dotenv()
