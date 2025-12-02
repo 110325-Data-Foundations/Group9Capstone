@@ -1,4 +1,10 @@
-from sj_transformations import calculate_standardized_salary
+import sys
+import os
+
+# Make Python see the project root
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from Python.sj_transformations import calculate_standardized_salary
 
 def test_salary_takes_precedence():
     # If both somehow exist, salary should be chosen
