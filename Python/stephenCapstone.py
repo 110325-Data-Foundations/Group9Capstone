@@ -48,9 +48,6 @@ dept_stats['inequality_score'] = dept_stats.apply(
 print("Most unequal departments:")
 print(dept_stats.sort_values('inequality_score', ascending=False).head())
 
-
-
-
 # s = size of dots scaled down by 10 for visibility
 plt.scatter(
     dept_stats['mean'],
@@ -60,14 +57,10 @@ plt.scatter(
     c='teal'
 )
 
-
 # Fancy part: Auto-Labeling Outliers
 # Dont label every dot, instead only label ones that are High CV and High Pay Avg
 
 # !!! SETUP CATEGORIES FOR LABELING !!!
-
-# Top 3 largest departments for population anchor
-top_three_names = dept_stats.nlargest(3, 'count')['department'].tolist()
 
 def assign_category(row):
     # Assigns a color based category (priority based)
@@ -85,10 +78,10 @@ dept_stats['label_category'] = dept_stats.apply(assign_category, axis=1)
 
 # Color Legend
 color_map = {
-    'High Inequality': 'red',
-    'High Pay': 'green',
-    'Anchor Department': 'blue',
-    'Normal': 'lightgray'
+    'High Inequality': 'tomato',
+    'High Pay': 'springgreen',
+    'Anchor Department': 'cornflowerblue',
+    'Normal': 'gainsboro'
 }
 
 # Scatterplot time
@@ -132,7 +125,6 @@ for i, row in label_subset.iterrows():
             color='black'
         )
     )
-    
 
 # This is the way to adjust labels to minimize overlap with adjustText
 adjust_text(texts, arrowprops=dict(arrowstyle='-', color='black', lw=1.0))
