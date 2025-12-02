@@ -1,14 +1,10 @@
 import pandas as pd
-import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import zachCalculations as zach
 from sqlalchemy import create_engine #this creates our database engine
 from dotenv import load_dotenv #lets us read from our .env file
 import os
 from adjustText import adjust_text
-
 
 # Load our environment variable(s) from our .env file
 load_dotenv()
@@ -19,16 +15,48 @@ engine=create_engine(database_url)
 # #If we just want everything in a table we can just use pandas to ask for the table
 df=pd.read_sql_table('stg_employee_comp',engine)
 
-labels=list(df.columns)
-#  0   "full_name",
-#  1   "department",
-#  2   "job_title",
-#  3   "full_or_part",
-#  4   "salary_or_hourly",
-#  5   "salary",
-#  6   "hourly_rate",
-#  7   "weekly_hours",
-#  8   "est_annual_pay",
-#  9   "department_avg"
+# We want to compare the average hourly pay of part time and full time by department
+# Created a DF with average hourly by salary, full time, and part time grouped by department
 
-#
+filtered = df[
+    ((df['full_or_part'] == 'F') & (df['salary_or_hourly'] == 'HOURLY')) |
+    (df['salary_or_hourly'] == 'SALARY') | ((df['full_or_part'] == 'P') & 
+    (df['salary_or_hourly'] == 'HOURLY'))
+]
+
+avgHourly = filtered.groupby(['department','salary_or_hourly','full_or_part'])['hourly_rate'].mean()
+# print(avgHourly)
+avgHourly_df = avgHourly.reset_index()
+
+filtered2 = df[
+    ((df['full_or_part'] == 'F') & (df['salary_or_hourly'] == 'HOURLY')) |
+    ((df['full_or_part'] == 'P') & (df['salary_or_hourly'] == 'HOURLY')) |
+    (df['salary_or_hourly'] == 'SALARY')
+]
+
+departments_with_part_time = df.loc[df['full_or_part'] == 'P', 'department'].unique()
+
+# Filter avgHourly_df to only those departments
+avgHourly_df = avgHourly_df[avgHourly_df['department'].isin(departments_with_part_time)]
+
+# Pivot so each category becomes a column
+pivot_df = avgHourly_df.pivot_table(
+    index='department',
+    columns=['salary_or_hourly','full_or_part'],
+    values='hourly_rate'
+)
+
+# Plot grouped bar chart to show average hourly wage by department
+pivot_df.plot(kind='bar', figsize=(10,6))
+
+plt.xlabel('Departments With Part Time Employees')
+plt.ylabel('Average Hourly Rate')
+plt.title('Average Hourly Rate by Department (Only Departments with Part-Time Employees)')
+plt.xticks(rotation=45,fontsize=8)
+for label in plt.gca().get_xticklabels():
+    label.set_horizontalalignment('right')   # ha='right'
+
+# plt.tick_params(axis='x',which='major',pad=15)
+plt.legend(title='Category', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
