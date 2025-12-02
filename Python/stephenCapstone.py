@@ -75,8 +75,8 @@ def assign_category(row):
         return 'High Inequality'
     elif row['mean'] > 120000:
         return 'High Pay'
-    elif row['department'] in top_three_names:
-        return 'Largest Dept'
+    elif 85000< row['mean'] < 100000 and 25 < row['inequality_score'] < 35:
+        return 'Anchor Department'
     else:
         return 'Normal'
 
@@ -87,7 +87,7 @@ dept_stats['label_category'] = dept_stats.apply(assign_category, axis=1)
 color_map = {
     'High Inequality': 'red',
     'High Pay': 'green',
-    'Largest Dept': 'blue',
+    'Anchor Department': 'blue',
     'Normal': 'lightgray'
 }
 
