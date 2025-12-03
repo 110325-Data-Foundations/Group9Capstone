@@ -18,6 +18,9 @@ def calculate_hourly(salary):
 #Calculates department average - should be used in a spot where it matches with a department name
 def calculate_salary_avg(salary):
     totalSalary=0
+    count=0
     for y in salary:
         totalSalary+=y
-    return totalSalary
+        count+=1
+    avgSalary=totalSalary/count
+    return avgSalary
