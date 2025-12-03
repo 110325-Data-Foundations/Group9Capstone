@@ -11,11 +11,14 @@ load_dotenv()
 # Step 2: Create our database connection
 engine = create_engine(os.getenv('DATABASE_URL'))
 
-#Load CSV
-df = pd.read_csv("Data/Current_Employee_Names__Salaries__and_Position_Titles.csv")
+userInput=input("Enter a 1 if you want to read in a csv file or 2 if you want to read in a json file: ")
 
-#Load JSON
-#jsondf = pd.read_json("Data/CapstoneJsonFile.json")
+if userInput=='2':
+    #Load JSON
+    df = pd.read_json("Data/CapstoneJsonFile.json")
+else:
+    #Load CSV
+    df = pd.read_csv("Data/Current_Employee_Names__Salaries__and_Position_Titles.csv")
 
 # Rename CSV -> DB columns
 df = df.rename(columns={
