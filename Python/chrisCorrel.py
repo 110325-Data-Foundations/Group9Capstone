@@ -4,10 +4,6 @@ import matplotlib.pyplot as plt
 
 
 def plot_correlation(df):
-    """
-    Creates a correlation heatmap using only variables that produce
-    real, meaningful insights from this dataset.
-    """
 
     df_corr = df.copy()
 

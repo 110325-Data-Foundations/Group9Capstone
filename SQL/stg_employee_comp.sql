@@ -13,7 +13,6 @@ CREATE TABLE stg_employee_comp (
     hourly_rate      NUMERIC(10,2) DEFAULT 0,
     weekly_hours     INTEGER DEFAULT 40,
     load_ts          TIMESTAMPTZ DEFAULT NOW(),
-    department_avg   NUMERIC(12,2)
 );
 
 -- DROP + CREATE rejects
@@ -87,3 +86,7 @@ SELECT * FROM stg_employee_comp LIMIT 1000;
 
 -- View audit log
 SELECT * FROM audit_logs ORDER BY log_id DESC LIMIT 25;
+
+
+TRUNCATE TABLE stg_employee_comp RESTART IDENTITY CASCADE;
+TRUNCATE TABLE rejects RESTART IDENTITY CASCADE;

@@ -30,9 +30,26 @@ df = df.rename(columns={
 })
 labels=list(df.columns)
 
-# Add required NULL columns 
-df["department_avg"] = None 
+def normalize_department(d):
+    if pd.isna(d):
+        return None
+    
+    d = d.strip().upper()
 
+    fixes = [
+        ("CHICAGO DEPARTMENT OF ", ""),
+        ("CITY OF CHICAGO - ", ""),
+        ("DEPARTMENT OF ", ""),
+        ("DEPT OF ", ""),
+        ("DEPT. OF ", "")
+    ]
+
+    for old, new in fixes:
+        d = d.replace(old, new)
+
+    return d.strip()
+
+df["department"] = df["department"].apply(normalize_department)
 
 # Avoid NaN numeric issues
 # df["salary"] = df["salary"].fillna(0)
@@ -113,7 +130,6 @@ valid_df = valid_df[[
     "salary",
     "hourly_rate",
     "weekly_hours",
-    "department_avg"
 ]]
 
 # Load valid rows into stg_employee_comp table
